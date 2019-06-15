@@ -7,7 +7,7 @@ from wtforms.validators import InputRequired,Email,Length
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:aa09@localhost/geekText"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password@localhost/geekText"
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 
@@ -47,8 +47,6 @@ class Book(db.Model):
     description = db.Column(db.String(128))
     price = db.Column(db.Float)
 
-
-
 class Category(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(128))
@@ -61,12 +59,12 @@ def index():
 @app.route('/login',methods=['GET','POST'])
 def login():
     form = LoginForm()
-    return render_template('login.html')
+    return render_template('login.html',form=form)
 
 @app.route('/register',methods=['GET','POST'])
 def register():
     form = RegistrationForm()
-    return render_template('register.html')
+    return render_template('register.html',form=form)
 
 
 @app.route('/books')
@@ -90,16 +88,21 @@ def book(id):
 
 @app.route('/user_books')
 def user_books(id):
-
+    # check all books with the ide of the specified user
     return render_template('user_books.html')
 
 @app.route('/user_books/<int:id>')
 def user_book(id):
+    # check book with the id that belongs to the user
 
     return render_template('user_books.html')
-@app.route('/add_to_cart')
-def add_to_cart(id):
 
+@app.route('/add_to_cart<int:id>')
+def add_to_cart(id):
+    # check thru books for the book with the specified id 
+    # check thru the book copy for the book copy with the id 
+
+    
     return render_template('books.html')
 
 @app.route('/cart')

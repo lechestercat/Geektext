@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family:"Open Sans", Helvetica, Arial, sans-serif;
     color:#555;
     max-width:680px;
@@ -97,10 +97,6 @@ body {
     margin-top: 0;
   }
   
-  
-  
-  
-  
   .success-box {
     margin:50px 0;
     padding:10px 10px;
@@ -123,7 +119,7 @@ body {
   
   
   /* Rating Star Widgets Style */
-  .rating-stars ul {
+  /* .rating-stars ul {
     list-style-type:none;
     padding:0;
     
@@ -136,18 +132,17 @@ body {
   }
   
   /* Idle State of the stars */
-  .rating-stars ul > li.star > i.fa {
+  /* .rating-stars ul > li.star > i.fa {
     font-size:2.5em; /* Change the size of the stars */
-    color:#ccc; /* Color on idle state */
-  }
+    /* color:#ccc; /* Color on idle state */
   
   /* Hover state of the stars */
-  .rating-stars ul > li.star.hover > i.fa {
+  /* .rating-stars ul > li.star.hover > i.fa {
     color:#FFCC36;
   }
   
   /* Selected state of the stars */
-  .rating-stars ul > li.star.selected > i.fa {
+  /* .rating-stars ul > li.star.selected > i.fa {
     color:#FF912C;
   }
-  
+   */ 
