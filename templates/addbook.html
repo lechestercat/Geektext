@@ -1,0 +1,27 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+
+<h2>Add Book</h2>
+
+<form method="POST" action="addbook">
+        <label for="book_name">Name</label>
+        <br>
+        <input type="text" name="book_name">
+        <br>
+        <br>
+        <p>Descriptiom</p>
+
+        <textarea name="description"></textarea>
+        <br>
+        <br>
+        <p>Price</p>
+        <input type="text" name="price">
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
+
+

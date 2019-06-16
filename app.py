@@ -1,4 +1,4 @@
-from flask import Flask, render_template,redirect,make_response,request 
+from flask import Flask,flash, render_template,redirect,make_response,request,url_for,session  
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate 
 from flask_wtf import FlaskForm
@@ -7,7 +7,7 @@ from wtforms.validators import InputRequired,Email,Length
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password@localhost/geekText"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:aa09@localhost/geekText"
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 
@@ -38,6 +38,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     email = db.Column(db.String(128))
+    password = db.Column(db.String(128))
     books = db.relationship('Book',secondary=book_copies,backref=db.backref('users',lazy='dynamic'))
 
 class Book(db.Model):
@@ -59,13 +60,75 @@ def index():
 @app.route('/login',methods=['GET','POST'])
 def login():
     form = LoginForm()
+    session.pop('user',None)
+
+    if 'user' in session:
+        return redirect(url_for(index))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # email    = request.form['email']
+        exists = db.session.query(User.id).filter_by(name=username,password=password).scalar() is not None
+
+        if exists == True: 
+            # username and password found now they will be logged in 
+            session['user'] = request.form['username'] 
+            flash("You are now logged in",'success')
+            return redirect(url_for('index'))
+        else:          
+            # in the homepage show a flask message saying 
+            # you are now logged in
+            # redirect them to the homepage 
+            flash("That username could not be found/password/username are incorrect",'error')
+            return redirect(url_for("index"))
+        print("post")
+        # access the username,password,email 
+        # check if in the db exists a username with 
+        # the same password and email and username 
+        # if yes then redirect them to the homepage 
+        # in the hompage show a flash message saying you 
+        # are now logged in 
+
     return render_template('login.html',form=form)
+
+@app.route('/logout')
+def logout():
+    session.pop('user',None)
+    flash("You have been logged out",'success')
+    return render_template('index.html')
 
 @app.route('/register',methods=['GET','POST'])
 def register():
     form = RegistrationForm()
-    return render_template('register.html',form=form)
 
+    if request.method == 'POST':
+        # access the username, password, email 
+        # access the db object and create new user 
+        username = request.form['username']
+        password = request.form['password']
+        email    = request.form['email']
+        # check if a user already exists 
+        #  with that username 
+        exists = db.session.query(User.id).filter_by(name=username).scalar() is not None 
+
+        if exists == True: 
+            # session flash that someone already exists with that username
+            flash("Someone already exists with that username",'error')
+            return redirect(url_for('register'))
+        else:  
+            # create a new user with that password and username
+            # and email 
+            new_user = User(username=username,password=password,email=email)              
+            # in the homepage show a flask message saying 
+            # you are now registered 
+            # redirect them to the homepage 
+            session['user'] = request.form['username']
+            flash("You were successfully logged in",'success')
+            return redirect(url_for("index"))
+    else:
+        print("one") 
+    return render_template('register.html',form=form)
 
 @app.route('/books')
 def books():
@@ -78,6 +141,12 @@ def books():
         print(book.price)
 
     return render_template('books.html',books=books)
+
+@app.route('/addbook',methods=['GET','POST'])
+def addbook():
+    if request.method == 'POST':
+        book_name = request.form['book_name']
+    return render_template('addbook.html')
 
 # book edit view 
 @app.route('/book/<int:id>')
@@ -101,8 +170,7 @@ def user_book(id):
 def add_to_cart(id):
     # check thru books for the book with the specified id 
     # check thru the book copy for the book copy with the id 
-
-    
+   
     return render_template('books.html')
 
 @app.route('/cart')

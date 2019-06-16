@@ -4,10 +4,15 @@
    LOGIN 
 <form action="">
     {{form.username.label(class="form-control-label")}}
-    {{form.username(class="form-control form-control-lg")}}
+    <br>
+    {{form.username}}
+    <br>
+    password 
+    <br>
     {{form.password}}
-    {{form.remmember}}
-    {{form.submit}}
+    <br>
+    <br>
+    {{form.submit(class="btn-primary")}}
 </form>
 
 {% endblock %}

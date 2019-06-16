@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1>Books</h1>
+    <button style="" id="addbookbutton"><a href="/addbook">Add Book</a></button>
     {% for book in books %}
         {{book.title}} <br>
     {% endfor %}

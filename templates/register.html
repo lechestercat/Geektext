@@ -2,15 +2,23 @@
 
 {% block body %}
     REGISTER 
+    <br>
     {{form.username.label(class="form-control-label")}}
     <br>
-    {{form.username(class="form-control form-control-lg")}}
+    {{form.username()}}
+    <br>
+    Email 
     <br>
     {{form.email}}
     <br>
+    Password
+    <br>
     {{form.password}}
+    <br>
+    Confirm 
     <br>
     {{form.confirm(value="Confirm")}}
     <br>
-    {{form.submit}}
+    <br>
+    {{form.submit(class="btn-primary")}}
 {% endblock %}
