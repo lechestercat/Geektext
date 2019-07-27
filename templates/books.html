@@ -1,9 +1,41 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Books</h1>
-    <button style="" id="addbookbutton"><a href="/addbook">Add Book</a></button>
-    {% for book in books %}
-        {{book.title}} <br>
-    {% endfor %}
+    <h1 id="books">GeekText</h1>
+	<h2 id="books">For Geeks, By Geeks</h2>
+
+    <table id="example">
+        <tbody>
+            <tr>
+                <th>Cover</th>
+                <th>Name</th>
+				<th>Author</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+            {% for book in books %}
+                <tr>
+                    <td><div class="text-center">
+					<a href="{{ url_for('book', id=book.id) }}">
+						<img id="myImg" class="img-thumbnail" src ="{{ book.image_path }}" alt="Book Image" style="width:100%;max-width:300px">
+					</a>	
+					</div></td>
+                    <td>{{ book.title }}</td>
+					<td>{{ book.authorName }}</td>
+                    <td>{{ book.description }}</td>
+                    <td>{{ book.price }}</td>
+                    {% if current_user.is_authenticated %}
+                        <td><button><a href="{{ url_for('book', id=book.id) }}">See</a></button>
+                            <button><a href="{{ url_for('add_to_cart', book_id=book.id) }}">Add to Cart</a></button>
+                        </td>
+                    {% else %}
+                        <td><button><a href="{{ url_for('book', id=book.id) }}">See</a></button>
+                            <button><a>Add to Cart</a></button>
+                        </td>
+                    {% endif %}                  
+                </tr>       
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

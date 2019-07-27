@@ -1,0 +1,12 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+    <h2>Successfull checkout for your order:</h2>
+    <h4>Your orders:</h4>
+    <ol>
+        {% for order in order %}
+            <li>{{ order }}</li>
+        {% endfor %}
+    </ol>
+{% endblock %}
+

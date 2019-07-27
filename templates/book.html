@@ -2,9 +2,128 @@
 
 {% block body %}
 
- {{book.title}}
 
- <div id="mybook">
+
+<div class="container">
+	<div class = "row">
+		<div class="col-sm-4">
+			<div class="card">
+				<h4 class="card-title text-center">{{book.title}}</h4>
+				<h5 class="card-subtitle mb-1 text-center"><a href="{{ url_for('author_page') }}">{{book.authorName}}</a></h5>
+				<h6 class="card-subtitle mb-1 text-muted text-center">{{ book.genre }}</h6>
+				<div class="text-center">
+					<img id="myImg" class="img-thumbnail" src ="{{ book.image_path }}" alt="Book Image" style="width:100%;max-width:300px">
+					<!-- The Modal -->
+					<div id="myModal" class="modal">
+
+						<!-- The Close Button -->
+						<span class="close">&times;</span>
+
+						<!-- Modal Content (The Image) -->
+						<img class="modal-content" id="img01">
+
+						<!-- Modal Caption (Image Text) -->
+						<div id="caption"></div>
+					</div>
+				</div>
+				<section class='rating-widget'>
+
+					<!-- Rating Stars Box -->
+					<div class='rating-stars text-left'>
+						<ul id='stars line-inline'>
+							<li class='star list-inline-item' title='Poor' data-value='1'>
+								<i class='fa fa-star fa-fw'></i>
+							</li>
+							<li class='star list-inline-item' title='Fair' data-value='2'>
+								<i class='fa fa-star fa-fw'></i>
+							</li>
+							<li class='star list-inline-item' title='Good' data-value='3'>
+								<i class='fa fa-star fa-fw'></i>
+							</li>
+							<li class='star list-inline-item' title='Excellent' data-value='4'>
+								<i class='fa fa-star fa-fw'></i>
+							</li>
+							<li class='star list-inline-item' title='WOW!!!' data-value='5'>
+								<i class='fa fa-star fa-fw'></i>
+							</li>
+						</ul>
+					</div>
+					<!--
+					<div class='success-box'>
+					<div class='clearfix'></div>
+						<img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/>
+						<div class='text-message'></div>
+						<div class='clearfix'></div>
+					</div>
+					</section>
+					-->
+
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item text-center">${{ book.price }}</li>
+					</ul>
+					<div class="card-body">
+						<a href="{{ url_for('add_to_cart', user_id=current_user.id, book_id=book.id) }}" class="btn btn-primary">Add to Cart</a>
+						<a href="{{ url_for('save_for_later',book_id=book.id) }}" class="btn btn-secondary">Save for later</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 align-self-center">
+			<div class="row">
+				<p class="card-text">{{ book.description }}</p>
+			</div>
+			
+			<div class="row">
+				<p>About The Author</p>
+				<p>{{author.AuthorBio}}</p>
+			</div>
+
+			<div class="row">
+				<p> Publisher : {{ book.publisher }}</p>
+			</div>
+
+			<div class="row">
+				<p>Comments : </p>
+				{% if new_comments %}
+					<ul>
+						{% for comments in new_comments %}
+							<li>{{ comments.user }} added  <a>{{ comments.text }}</a></li>
+						{% endfor %}
+					</ul>
+				{% else %}
+				<p>&nbsp No comments yet.</p>
+				{% endif %}
+			</div>
+			<a href="{{ url_for('book_comments') }}">View All Comments For Book</a>
+		</div>
+	</div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
+</script>
+
+
+
+ <!-- <div id="mybook">
     <div>
         <h3>Yay, Page 1!</h3>
     </div>
@@ -17,40 +136,10 @@
     <div>
         <h3>Yay, Page 4!</h3>
     </div>
-</div>
+</div> -->
 
 
 
-<section class='rating-widget'>
-  
-  <!-- Rating Stars Box -->
-  <div class='rating-stars text-center'>
-    <ul id='stars'>
-      <li class='star' title='Poor' data-value='1'>
-        <i class='fa fa-star fa-fw'></i>
-      </li>
-      <li class='star' title='Fair' data-value='2'>
-        <i class='fa fa-star fa-fw'></i>
-      </li>
-      <li class='star' title='Good' data-value='3'>
-        <i class='fa fa-star fa-fw'></i>
-      </li>
-      <li class='star' title='Excellent' data-value='4'>
-        <i class='fa fa-star fa-fw'></i>
-      </li>
-      <li class='star' title='WOW!!!' data-value='5'>
-        <i class='fa fa-star fa-fw'></i>
-      </li>
-    </ul>
-  </div>
-  
-  <div class='success-box'>
-    <div class='clearfix'></div>
-    <img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/>
-    <div class='text-message'></div>
-    <div class='clearfix'></div>
-  </div>
-</section>
 
 
 
@@ -58,7 +147,3 @@
 
 {% endblock %}
 
-{% block scripts %}
-
-
-{% endblock %}

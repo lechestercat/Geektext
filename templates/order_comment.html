@@ -1,0 +1,21 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+
+<h3>Welcome to order comment section</h3>
+<div class="card mx-auto" style="width: 18rem;">
+  <img src="{{ book.image_path }}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ book.title }}</h5>
+    <p class="card-text">{{ book.description }}</p>
+  </div>
+</div>
+<form method="POST" action="{{ url_for('order_comment', bookId=book.id)}}">
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea class="form-control" name="comment" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Comment</button>
+</form>
+
+{% endblock %}
