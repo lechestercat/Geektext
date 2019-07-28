@@ -3,9 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2019 at 02:55 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.7
+-- Generation Time: Jun 25, 2019 at 12:50 AM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
+
+CREATE DATABASE IF NOT EXISTS geek_text;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `authors`
 --
+USE geek_text;
 
 CREATE TABLE `authors` (
   `AuthorID` int(11) NOT NULL,
@@ -56,58 +59,24 @@ CREATE TABLE `book` (
   `image_path` varchar(128) DEFAULT NULL,
   `title` varchar(128) DEFAULT NULL,
   `description` varchar(128) DEFAULT NULL,
-  `price` float DEFAULT NULL,
-  `authorName` varchar(50) DEFAULT NULL,
-  `publisher` varchar(128) DEFAULT NULL,
-  `genre` varchar(32) DEFAULT NULL
+  `price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `book`
---
+ALTER TABLE `book`
+ADD authorName varchar(50);
 
-INSERT INTO `book` (`id`, `image_path`, `title`, `description`, `price`, `authorName`, `publisher`, `genre`) VALUES
-(1, 'https://github.com/GustavoPT/GeekTextImages/blob/master/cover_gameofthrones01.jpg?raw=true', 'A Game of Thrones', 'A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels', 19.99, 'George R. R. Martin', 'Bantam Spectra', 'Fantasy'),
-(2, 'https://github.com/GustavoPT/GeekTextImages/blob/master/HP_SS.jpg?raw=true', 'Harry Potter and the Sorcerer\'s Stone', 'Harry finds himself drawn deep inside a mystical world he never knew existed and closer to his own noble destiny.', 9.99, 'J. K. Rowling', 'Bloomsbury', 'Fantasy'),
-(3, 'https://github.com/GustavoPT/GeekTextImages/blob/master/BNW.jpg?raw=true', 'Brave New World', 'masterpiece ... one of the most prophetic dystopian works of the 20th century.', 14.99, 'Aldous Huxley', 'Chatto & Windus', 'Science Fiction'),
-(4, 'https://github.com/GustavoPT/GeekTextImages/blob/master/TFotR.jpg?raw=true', 'The Fellowship of the Ring', 'The first volume in J.R.R. Tolkien\'s epic adventure THE LORD OF THE RINGS', 11.99, 'J. R. R. Tolkien', 'Allen & Unwin', 'Fantasy'),
-(5, 'https://github.com/GustavoPT/GeekTextImages/blob/master/EAP.jpg?raw=true', 'Edgar Allan Poe: Complete Tales and Poems', 'His complete early and miscellaneous poetic masterpieces.', 10.99, 'Edgar Allan Poe', 'Simon & Schuster', 'Mystery');
+ALTER TABLE `book`
+ADD publisher varchar(128);
 
--- --------------------------------------------------------
+ALTER TABLE `book`
+ADD genre varchar(32);
 
---
--- Table structure for table `bookratings`
---
-
-CREATE TABLE `bookratings` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `bookId` int(11) NOT NULL,
-  `rating` int(11) DEFAULT NULL,
-  `comments` varchar(254) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `bookratings`
---
-
-INSERT INTO `bookratings` (`id`, `userId`, `bookId`, `rating`, `comments`) VALUES
-(1, 1, 1, NULL, 'cool book'),
-(2, 1, 1, NULL, 'great book'),
-(3, 1, 1, NULL, NULL),
-(4, 1, 1, NULL, NULL),
-(5, 1, 1, NULL, NULL),
-(6, 1, 1, NULL, NULL),
-(7, 1, 3, NULL, 'new nice book'),
-(8, 1, 3, NULL, NULL),
-(9, 1, 5, NULL, NULL),
-(10, 1, 4, NULL, NULL),
-(11, 1, 3, NULL, NULL),
-(12, 1, 5, NULL, NULL),
-(13, 1, 4, NULL, NULL),
-(14, 1, 3, NULL, NULL),
-(15, 1, 5, NULL, NULL),
-(16, 1, 4, NULL, NULL);
+INSERT INTO `book` (`id`, `publisher`, `genre`, `image_path`, `title`, `authorName`, `description`, `price`) VALUES
+(1, 'Bantam Spectra', 'Fantasy', 'https://github.com/GustavoPT/GeekTextImages/blob/master/cover_gameofthrones01.jpg?raw=true', 'A Game of Thrones', 'George R. R. Martin', 'A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels', '19.99'),
+(2, 'Bloomsbury', 'Fantasy', 'https://github.com/GustavoPT/GeekTextImages/blob/master/HP_SS.jpg?raw=true','Harry Potter and the Sorcerer''s Stone', 'J. K. Rowling', 'Harry finds himself drawn deep inside a mystical world he never knew existed and closer to his own noble destiny.','9.99'),
+(3, 'Chatto & Windus', 'Science Fiction', 'https://github.com/GustavoPT/GeekTextImages/blob/master/BNW.jpg?raw=true','Brave New World', 'Aldous Huxley', 'masterpiece ... one of the most prophetic dystopian works of the 20th century.','14.99'),
+(4, 'Allen & Unwin', 'Fantasy', 'https://github.com/GustavoPT/GeekTextImages/blob/master/TFotR.jpg?raw=true','The Fellowship of the Ring', 'J. R. R. Tolkien', 'The first volume in J.R.R. Tolkien''s epic adventure THE LORD OF THE RINGS', '11.99'),
+(5, 'Simon & Schuster', 'Mystery', 'https://github.com/GustavoPT/GeekTextImages/blob/master/EAP.jpg?raw=true','Edgar Allan Poe: Complete Tales and Poems', 'Edgar Allan Poe', 'His complete early and miscellaneous poetic masterpieces.', '10.99');
 
 -- --------------------------------------------------------
 
@@ -127,6 +96,9 @@ CREATE TABLE `books` (
   `BookCover` varchar(200) DEFAULT NULL,
   `BookRating` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
 
 -- --------------------------------------------------------
 
@@ -229,27 +201,6 @@ CREATE TABLE `category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
---
-
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `book_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `user_id`, `book_id`) VALUES
-(7, 1, 3),
-(8, 1, 5),
-(9, 1, 4);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `publishers`
 --
 
@@ -292,13 +243,6 @@ CREATE TABLE `user` (
   `password` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES
-(1, 'test', 'test@email.com', 'testing');
-
 -- --------------------------------------------------------
 
 --
@@ -312,22 +256,6 @@ CREATE TABLE `users` (
   `Hash` varchar(2000) DEFAULT NULL,
   `Salt` varchar(2000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_card`
---
-
-CREATE TABLE `user_card` (
-  `id` int(11) NOT NULL,
-  `UserID` int(11) DEFAULT NULL,
-  `CreditCardNum` varchar(128) DEFAULT NULL,
-  `ExpMonth` int(11) DEFAULT NULL,
-  `ExpYear` int(11) DEFAULT NULL,
-  `CVS` int(11) DEFAULT NULL,
-  `NameOnCard` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -373,21 +301,6 @@ CREATE TABLE `user_purchased` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_shipping`
---
-
-CREATE TABLE `user_shipping` (
-  `id` int(11) NOT NULL,
-  `UserID` int(11) DEFAULT NULL,
-  `ShippingAddr` varchar(128) DEFAULT NULL,
-  `ShippingCity` varchar(128) DEFAULT NULL,
-  `ShippingState` varchar(128) DEFAULT NULL,
-  `ShippingZip` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `user_shippings`
 --
 
@@ -413,12 +326,6 @@ ALTER TABLE `authors`
 -- Indexes for table `book`
 --
 ALTER TABLE `book`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `bookratings`
---
-ALTER TABLE `bookratings`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -464,14 +371,6 @@ ALTER TABLE `category`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `book_id` (`book_id`);
-
---
 -- Indexes for table `publishers`
 --
 ALTER TABLE `publishers`
@@ -498,13 +397,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`UserID`,`UserName`);
 
 --
--- Indexes for table `user_card`
---
-ALTER TABLE `user_card`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `UserID` (`UserID`);
-
---
 -- Indexes for table `user_cards`
 --
 ALTER TABLE `user_cards`
@@ -523,13 +415,6 @@ ALTER TABLE `user_purchased`
   ADD PRIMARY KEY (`BookID`,`UserID`);
 
 --
--- Indexes for table `user_shipping`
---
-ALTER TABLE `user_shipping`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `UserID` (`UserID`);
-
---
 -- Indexes for table `user_shippings`
 --
 ALTER TABLE `user_shippings`
@@ -543,13 +428,7 @@ ALTER TABLE `user_shippings`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `bookratings`
---
-ALTER TABLE `bookratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `book_ratings`
@@ -561,19 +440,13 @@ ALTER TABLE `book_ratings`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `saveforlater`
@@ -585,18 +458,6 @@ ALTER TABLE `saveforlater`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `user_card`
---
-ALTER TABLE `user_card`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user_shipping`
---
-ALTER TABLE `user_shipping`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -624,30 +485,11 @@ ALTER TABLE `category`
   ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `book` (`id`);
 
 --
--- Constraints for table `orders`
---
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
-
---
 -- Constraints for table `saveforlater`
 --
 ALTER TABLE `saveforlater`
   ADD CONSTRAINT `saveforlater_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `saveforlater_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
-
---
--- Constraints for table `user_card`
---
-ALTER TABLE `user_card`
-  ADD CONSTRAINT `user_card_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `user_shipping`
---
-ALTER TABLE `user_shipping`
-  ADD CONSTRAINT `user_shipping_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

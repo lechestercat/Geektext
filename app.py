@@ -324,6 +324,18 @@ def add_to_cart(book_id):
     flash('Book added to cart', 'success')
     return redirect(url_for('index'))
 
+@app.route('/increase_book_quantity',methods=["POST"])
+def increase_book_quantity():
+    quan = request.form['quan']
+    book_id = request.form['bookId']
+    user_id = current_user.id
+    book = Cart.query.filter_by(user_id=user_id, book_id=book_id).first()
+    book.quantity = quan
+    db.session.add(book)
+    db.session.commit()
+    return redirect('cart') 
+
+
 
 @app.route('/save_for_later/<int:book_id>')
 def save_for_later(book_id):
@@ -357,23 +369,38 @@ def cart():
 
     for book in user_cart:
         book_id = book.book_id
+        book_q = book.quantity
         book = Book.query.filter_by(id=book_id).first()
-        total_price = book.price + total_price
+        total_price = book.price * book_q + total_price
         user_books.append(book)
-
     for book in all_saved_books:
         book_id = book.book_id
         book = Book.query.filter_by(id=book_id).first()
         saved_books_price = saved_books_price + book.price
         saved_books.append(book)
 
+    total_price = round(total_price, 2)
     cart_books = len(user_books)
     total_saved_books = len(all_saved_books)
 
-    return render_template('cart.html', total_price=total_price, books=user_books, saved_books=saved_books,
+    return render_template('cart.html', total_price=total_price, books=user_books,quantity=user_cart, saved_books=saved_books,
                            saved_books_price=saved_books_price, cart_books=cart_books,
                            total_saved_books=total_saved_books)
 
+@app.route('/total_price')
+def total_price():
+    user_id = current_user.id
+    user_cart = Cart.query.filter_by(user_id=user_id).all()
+    total_price = 0
+    for book in user_cart:
+        book_id = book.book_id
+        book_q = book.quantity
+        book = Book.query.filter_by(id=book_id).first()
+        total_price = book.price * book_q + total_price
+    
+    total_price = str(round(total_price, 2))
+
+    return total_price
 
 @app.route('/delete_book/<int:book_id>')
 def delete_book(book_id):
